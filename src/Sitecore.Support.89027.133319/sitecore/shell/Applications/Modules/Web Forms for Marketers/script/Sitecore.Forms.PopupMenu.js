@@ -8,6 +8,9 @@
         this.activePopup = null;
 
         this.show = function (event, controlid, height, width, args) {
+            // Sitecore.Support.133319 
+            window.Sitecore.Wfm.PopupMenu.args = args;
+
             var evt = (scForm.lastEvent != null ? scForm.lastEvent : event);
 
             var doc = document;
@@ -121,7 +124,13 @@
 
             document.body.appendChild(popup);
             var width = popup.offsetWidth;
-            var height = popup.offsetHeight;
+            // Sitecore.Support.89027 
+            //var height = popup.offsetHeight;
+            if (popup.baseURI.indexOf("ListItemsEditor") !== -1) {
+                var height = 520;
+            } else {
+                var height = popup.offsetHeight;
+            }
 
             var ctl = null;
             var x = evt.clientX != null ? evt.clientX : 0;
